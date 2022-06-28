@@ -1,4 +1,4 @@
-# SHGP
+# SHGP - Sparse Hierarchical Gaussian Process
 A sparse implementation of a heirarchical Gaussian processes in gpflow.
 
 ### Setup 
