@@ -1,5 +1,7 @@
 # SHGP - Sparse Hierarchical Gaussian Process
-A sparse implementation of a heirarchical Gaussian processes in gpflow.
+A sparse implementation of a heirarchical Gaussian processes in gpflow. On the jax branch we are planning to produce a jax implementation.
+
+**Please note that there is an active issue where the compilation of models with a large number of time series (realisations) create memory problems. We're working on this**
 
 ### Setup 
 Create conda environment
