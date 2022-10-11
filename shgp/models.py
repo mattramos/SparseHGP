@@ -16,7 +16,6 @@ import typing as tp
 
 class SHGP(BayesianModel, InternalDataTrainingLossMixin):
     """Sparse hierarchical Gaussian Process.
-
     Inherits:
         BayesianModel. So we can use maximum log-likelihood as the training_loss
         InternalDataTrainingLossMixin. Because we require this model to hold it's own data
@@ -92,7 +91,6 @@ class SHGP(BayesianModel, InternalDataTrainingLossMixin):
 
     def total_elbo(self):
         """Calculates the ELBO for all the kernels.
-
         Returns:
             tf.Tensor: The value of the ELBO
         """
@@ -122,12 +120,10 @@ class SHGP(BayesianModel, InternalDataTrainingLossMixin):
 
     def calc_ELBO_part(self, X, Y, kernel):
         """Calculates the ELBO given a kernel
-
         Args:
             X (tf.Tensor): The X data (covaraites)
             Y (tf.Tensor): The Y data (data to be fit)
             kernel (gpflow.kernels.Kernel): The GP kernel
-
         Returns:
             tf.Tensor: The ELBO component for the given kernel
         """
@@ -164,14 +160,12 @@ class SHGP(BayesianModel, InternalDataTrainingLossMixin):
         return (two_log_prob - two_trace) / 2.0
 
 
-    def fit(self, params, compile: bool = False):
+    def fit(self, params, compile: bool = False, progress_bar: bool = True):
         """Fit the HSGP using an Adam optimiser.
-
         Args:
             params (dict): A dictionary containing the fitting parameters: 
                 learning_rate - the Adam learning rate,
                 optim_nits - the number of optimisation steps,
-
             compile (bool, optional): Whether to compile the function for speed. Defaults to False.
         """
         self.objective_evals = []
@@ -183,8 +177,12 @@ class SHGP(BayesianModel, InternalDataTrainingLossMixin):
         else:
             objective = self.training_loss
 
-        tr = trange(params["optim_nits"])
-        for i in tr:
+        if progress_bar:
+            pbar = trange(params["optim_nits"])
+        else:
+            pbar = range(params["optim_nits"])
+
+        for i in pbar:
             with tf.GradientTape() as tape:
                 tape.watch(self.trainable_variables)
                 loss = objective()
@@ -192,7 +190,8 @@ class SHGP(BayesianModel, InternalDataTrainingLossMixin):
             grads = tape.gradient(loss, self.trainable_variables)
             opt.apply_gradients(zip(grads, self.trainable_variables))
             if i % params['log_interval'] == 0:
-                tr.set_postfix(loss=loss.numpy())
+                if progress_bar:
+                    pbar.set_postfix(loss=loss.numpy())
 
     def predict_f(
         self,
@@ -201,12 +200,10 @@ class SHGP(BayesianModel, InternalDataTrainingLossMixin):
         Y: tp.Union[np.ndarray, tf.Tensor],
     ) -> tp.Tuple[tf.Tensor, tf.Tensor]:
         """Compute the mean and variance of the latent function at new points.
-
         Args:
             xtest (tp.Union[np.ndarray, tf.Tensor]): The new test points at which to predict
             kernel (gpflow.kernels.base.Kernel): The kernel to use
             Y (tp.Union[np.ndarray, tf.Tensor]): The Y vector related to the kernel
-
         Returns:
             tp.Tuple[tf.Tensor, tf.Tensor]: Latent function mean and variance
         """
@@ -244,10 +241,8 @@ class SHGP(BayesianModel, InternalDataTrainingLossMixin):
         self, xtest: tp.Union[np.ndarray, tf.Tensor]
     ) -> tp.Tuple[tf.Tensor, tf.Tensor]:
         """Predict the group level mean and variance
-
         Args:
             xtest (tp.Union[np.ndarray, tf.Tensor]): The new test points at which to predict
-
         Returns:
             tp.Tuple[tf.Tensor, tf.Tensor]: Mean and variance of the group function
         """
@@ -259,11 +254,9 @@ class SHGP(BayesianModel, InternalDataTrainingLossMixin):
         self, xtest: tp.Union[np.ndarray, tf.Tensor], individual_idx: int
     ) -> tp.Tuple[tf.Tensor, tf.Tensor]:
         """Predict the individual (including group function) mean and variance
-
         Args:
             xtest (tp.Union[np.ndarray, tf.Tensor]): The new test points at which to predict
             individual_idx (int): _description_
-
         Returns:
             tp.Tuple[tf.Tensor, tf.Tensor]: Mean and variance of the individual 
         """
