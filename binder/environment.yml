@@ -1,0 +1,13 @@
+name: shgp-env
+channels:
+  - conda-forge
+  - plotly
+dependencies:
+  - python=3.10.4
+  - numpy=1.22.3
+  - plotly=5.10.0
+  - gpflow=2.5.2
+  - tensorflow=2.9.1
+  - xarray=0.20.1
+  - netcdf4=1.5.7
+  - netcdftime=1.0.0
