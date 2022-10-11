@@ -15,4 +15,5 @@ python setup.py install .
 ```
 
 ### Examples
-There is a basic data example at examples/basic_example.ipynb and a climate modelling based example at examples/climate_modelling_example_1D.ipynb
+- [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mattramos/SparseHGP/master?labpath=binder%2Fpresentation_and_examples.ipynb) This is a short (fully interactive) example based on a talk.
+- There is alsoa  basic data example at examples/basic_example.ipynb and a climate modelling based example at examples/climate_modelling_example_1D.ipynb
