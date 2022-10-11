@@ -29,8 +29,8 @@ pio.templates["pres"] = go.layout.Template(
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         colorway=px.colors.qualitative.Set2,
-        legend=dict(itemsizing='trace', font_size=26),
-        font_size=26,
+        legend=dict(itemsizing='trace', font_size=22),
+        font_size=22,
     )
 )
 
